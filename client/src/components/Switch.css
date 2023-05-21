@@ -1,0 +1,107 @@
+/* iOS style Switch component taken as is from Material UI v5 https://mui.com/material-ui/react-switch/#customization */
+label {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 1rem;
+  vertical-align: middle;
+  user-select: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.switch-root {
+  display: inline-flex;
+  width: 58px;
+  height: 38px;
+  overflow: hidden;
+  padding: 12px;
+  box-sizing: border-box;
+  position: relative;
+  flex-shrink: 0;
+  z-index: 0;
+  vertical-align: middle;
+  width: 42px;
+  height: 26px;
+  padding: 0;
+  margin: 0.5rem;
+}
+
+.switch-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-sizing: border-box;
+  background-color: transparent;
+  outline: 0;
+  border: 0;
+  margin: 0;
+  border-radius: 0;
+  padding: 0;
+  cursor: pointer;
+  user-select: none;
+  vertical-align: middle;
+  text-decoration: none;
+  color: inherit;
+  padding: 9px;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  color: #fff;
+  transition: left 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  padding: 0;
+  margin: 2px;
+  transition-duration: 300ms;
+
+  > input {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    margin: 0;
+    padding: 0;
+    width: 300%;
+    height: 100%;
+    cursor: inherit;
+    opacity: 0;
+    z-index: 1;
+  }
+
+  &.checked {
+    transform: translateX(16px);
+    color: #fff;
+
+    ~ .switch-track {
+      
+      background-color: #65c466;
+      border: 0;
+    }
+  }
+}
+
+.switch-track {
+  height: 100%;
+  width: 100%;
+  border-radius: 13px;
+  background-color: #6c6c6c;
+  z-index: -1;
+  transition: background-color 500ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+.switch-thumb {
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  background-color: currentColor;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  width: 22px;
+  height: 22px;
+}
+
+@media (prefers-color-scheme: light) {
+  .switch-track {
+    background-color: #e9e9ea;
+  }
+}

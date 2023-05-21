@@ -1,67 +1,67 @@
 :root {
-    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-    line-height: 1.5;
-    font-weight: 400;
-  
-    color-scheme: light dark;
-    color: #6c6c6c;
-    background-color: #1c1c1c;
-  
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-text-size-adjust: 100%;
-  
-    @media (prefers-color-scheme: light) {
-      color: #373737;
-      background-color: #fff;
-    }
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: #6c6c6c;
+  background-color: #1c1c1c;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+
+  @media (prefers-color-scheme: light) {
+    color: #373737;
+    background-color: #fff;
   }
-  
-  body {
-    margin: 0;
-    display: flex;
-    place-items: center;
-    min-height: 100vh;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-height: 100vh;
+}
+
+#root {
+  width: 100%;
+  height: 100vh;
+}
+
+.navbar {
+  display: flex;
+  padding: 1em;
+  justify-content: space-between;
+  border-bottom: 1px solid #111;
+
+  @media (prefers-color-scheme: light) {
+    border-bottom: 1px solid #e5e9ed;
   }
-  
-  #root {
-    width: 100%;
-    height: 100vh;
-  }
-  
-  .navbar {
-    display: flex;
-    padding: 1em;
-    justify-content: space-between;
-    border-bottom: 1px solid #111;
-  
-    @media (prefers-color-scheme: light) {
-      border-bottom: 1px solid #e5e9ed;
-    }
-  }
-  
-  .info-message {
-    display: flex;
+}
+
+.info-message {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 2rem;
+}
+
+.sensor-stack {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  margin: 0 auto;
+  padding: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  user-select: none;
+
+  @media (min-width: 600px) {
+    flex-direction: row;
     align-items: center;
-    flex-direction: column;
-    padding: 2rem;
-  }
-  
-  .sensor-stack {
-    display: flex;
-    flex-flow: column wrap;
-    justify-content: center;
-    margin: 0 auto;
-    padding: 1rem;
-    width: 100%;
-    box-sizing: border-box;
-    user-select: none;
-  
-    @media (min-width: 600px) {
-      flex-direction: row;
-      align-items: center;
       padding: 2rem;
     }
   }

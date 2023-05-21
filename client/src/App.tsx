@@ -3,11 +3,13 @@ import useWebSocket, { ConnectionStatus } from './hooks/useWebSocket';
 import './App.css';
 import ConnectionButton from './components/ConnectionButton';
 import Sensor, { SensorData, SensorCommandMessage } from './components/Sensor';
+import Switch from './components/Switch';
 
 const SERVER_URL = 'ws://127.0.0.1:5000';
 
 function App() {
   const [sensors, setSensors] = useState<Map<string, SensorData>>(new Map());
+  const [areDisconnectedVisible, setDisconnectedSensorsVisible] = useState(true);
 
   function handleMessage(message: SensorData) {
     setSensors((prev) => new Map(prev).set(message.id, message));
@@ -36,10 +38,14 @@ function App() {
     <>
       <div className="navbar">
         <ConnectionButton status={status} handleClick={() => handlePowerButtonClick()} />
+        <Switch
+          checked={areDisconnectedVisible}
+          handleChange={(e) => setDisconnectedSensorsVisible(e.target.checked)}
+        />
       </div>
 
       {status === ConnectionStatus.CONNECTED ? (
-        <ol className="sensor-stack">
+        <ol className={`sensor-stack${areDisconnectedVisible ? '' : ' no-disconnected'}`}>
           {[...sensors.values()].map((sensorData) => (
             <Sensor key={sensorData.id} data={sensorData} handleClick={(id) => toggleSensorById(id)} />
           ))}
