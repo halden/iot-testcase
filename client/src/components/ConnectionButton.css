@@ -1,0 +1,34 @@
+/* Here we use PowerSettingsNewIcon from Material UI v5 as base */
+.connection-button {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 0;
+  padding: 8px;
+  background-color: transparent;
+  border: 0;
+  box-sizing: border-box;
+  outline: 0;
+  cursor: pointer;
+  user-select: none;
+  vertical-align: middle;
+  text-decoration: none;
+  text-align: center;
+  -webkit-tap-highlight-color: transparent;
+  
+  > svg {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 1em;
+    height: 1em;
+    fill: currentColor;
+    font-size: 1.5rem;
+    user-select: none;
+  }
+
+  &.connected svg {
+    fill: #65c466;
+  }
+}
