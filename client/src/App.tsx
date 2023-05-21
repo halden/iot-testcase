@@ -1,18 +1,35 @@
-import useWebSocket from './hooks/useWebSocket';
+import { useState } from 'react';
+import useWebSocket, { ConnectionStatus } from './hooks/useWebSocket';
 import './App.css';
 import ConnectionButton from './components/ConnectionButton';
+import Sensor, { SensorData, SensorCommandMessage } from './components/Sensor';
 
 const SERVER_URL = 'ws://127.0.0.1:5000';
 
 function App() {
-  function handleMessage(message: any) {
-    // TODO handle received messages
+  const [sensors, setSensors] = useState<Map<string, SensorData>>(new Map());
+
+  function handleMessage(message: SensorData) {
+    setSensors((prev) => new Map(prev).set(message.id, message));
   }
 
-  const { status, toggleConnection, sendMessage } = useWebSocket<any, any>(handleMessage);
+  const { status, toggleConnection, sendMessage } = useWebSocket<SensorData, SensorCommandMessage>(handleMessage);
 
   function handlePowerButtonClick() {
     toggleConnection(SERVER_URL);
+  }
+
+  function toggleSensorById(id: SensorData['id']) {
+    const sensor = sensors.get(id);
+
+    if (sensor) {
+      const message: SensorCommandMessage = {
+        command: sensor.connected ? 'disconnect' : 'connect',
+        id,
+      };
+
+      sendMessage(message);
+    }
   }
 
   return (
@@ -20,10 +37,19 @@ function App() {
       <div className="navbar">
         <ConnectionButton status={status} handleClick={() => handlePowerButtonClick()} />
       </div>
-      <div className="info-message">
-        <h2>No server connection</h2>
-        <p>Use power button to connect</p>
-      </div>
+
+      {status === ConnectionStatus.CONNECTED ? (
+        <ol className="sensor-stack">
+          {[...sensors.values()].map((sensorData) => (
+            <Sensor key={sensorData.id} data={sensorData} handleClick={(id) => toggleSensorById(id)} />
+          ))}
+        </ol>
+      ) : (
+        <div className="info-message">
+          <h2>No server connection</h2>
+          <p>Use power button to connect</p>
+        </div>
+      )}
     </>
   );
 }

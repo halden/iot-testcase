@@ -1,0 +1,43 @@
+.sensor {
+  flex-direction: column;
+  height: 168px;
+  background: #252525;
+  box-sizing: border-box;
+  cursor: pointer;
+  z-index: 1;
+
+  &.disconnected {
+    opacity: 0.5;
+  }
+
+  .heading {
+    margin-top: 0;
+    font-size: 1rem;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+
+  .value {
+    display: flex;
+    padding-right: .5rem;
+    color: #efefef;
+    font-size: 2.5rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+
+    @media (prefers-color-scheme: light) {
+      color: #000;
+    }
+  }
+
+  @media (prefers-color-scheme: light) {
+    background: #e5e9ed;
+  }
+}
+
+.no-disconnected {
+  .disconnected {
+    display: none;
+  }
+}
+
