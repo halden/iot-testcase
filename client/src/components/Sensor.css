@@ -6,6 +6,10 @@
   cursor: pointer;
   z-index: 1;
 
+  & * {
+    pointer-events: none;
+  }
+
   &.disconnected {
     opacity: 0.5;
   }

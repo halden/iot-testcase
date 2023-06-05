@@ -8,6 +8,7 @@ export enum ConnectionStatus {
 
 export default function useWebSocket<T, U>(handleMessage: (message: T) => void) {
   const [status, setStatus] = useState<ConnectionStatus>(ConnectionStatus.DISCONNECTED);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [subject, setSubject] = useState<WebSocketSubject<any> | null>(null);
 
   const clearConnection = useCallback(() => {
@@ -17,9 +18,15 @@ export default function useWebSocket<T, U>(handleMessage: (message: T) => void) 
 
   const createWebSocket = useCallback(
     (url: string) => {
-      const subscription = webSocket<T>(url);
-
-      setStatus(ConnectionStatus.CONNECTED);
+      const subscription = webSocket<T>({
+        url,
+        openObserver: {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          next: (_val) => {
+            setStatus(ConnectionStatus.CONNECTED);
+          },
+        },
+      });
 
       subscription.subscribe({
         next: handleMessage,

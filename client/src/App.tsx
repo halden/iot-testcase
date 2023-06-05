@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { MouseEvent, useCallback, useState } from 'react';
 import useWebSocket, { ConnectionStatus } from './hooks/useWebSocket';
 import './App.css';
 import ConnectionButton from './components/ConnectionButton';
-import Sensor, { SensorData, SensorCommandMessage } from './components/Sensor';
+import Sensor, { SensorData, SensorCommandMessage, VALUE_PLACEHOLDER } from './components/Sensor';
 import Switch from './components/Switch';
 
 const SERVER_URL = 'ws://127.0.0.1:5000';
@@ -12,7 +12,11 @@ function App() {
   const [areDisconnectedVisible, setDisconnectedSensorsVisible] = useState(true);
 
   function handleMessage(message: SensorData) {
-    setSensors((prev) => new Map(prev).set(message.id, message));
+    setSensors((prev) => {
+      const value = message.value ? message.value : prev.get(message.id)?.value ?? VALUE_PLACEHOLDER;
+
+      return new Map(prev).set(message.id, { ...message, value });
+    });
   }
 
   const { status, toggleConnection, sendMessage } = useWebSocket<SensorData, SensorCommandMessage>(handleMessage);
@@ -21,17 +25,26 @@ function App() {
     toggleConnection(SERVER_URL);
   }
 
-  function toggleSensorById(id: SensorData['id']) {
-    const sensor = sensors.get(id);
+  const toggleSensorById = useCallback(
+    (id: SensorData['id']) => {
+      const sensor = sensors.get(id);
 
-    if (sensor) {
-      const message: SensorCommandMessage = {
-        command: sensor.connected ? 'disconnect' : 'connect',
-        id,
-      };
+      if (sensor) {
+        const message: SensorCommandMessage = {
+          command: sensor.connected ? 'disconnect' : 'connect',
+          id,
+        };
 
-      sendMessage(message);
-    }
+        sendMessage(message);
+      }
+    },
+    [sendMessage, sensors]
+  );
+
+  function handleSensorClick({ target }: MouseEvent<HTMLOListElement, globalThis.MouseEvent>) {
+    const id = (target as HTMLLIElement).getAttribute('data-sensor-id');
+
+    if (id) toggleSensorById(id);
   }
 
   return (
@@ -45,15 +58,19 @@ function App() {
       </div>
 
       {status === ConnectionStatus.CONNECTED ? (
-        <ol className={`sensor-stack${areDisconnectedVisible ? '' : ' no-disconnected'}`}>
+        // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
+        <ol
+          onClick={(e) => handleSensorClick(e)}
+          className={`sensor-stack${areDisconnectedVisible ? '' : ' no-disconnected'}`}
+        >
           {[...sensors.values()].map((sensorData) => (
-            <Sensor key={sensorData.id} data={sensorData} handleClick={(id) => toggleSensorById(id)} />
+            <Sensor key={sensorData.id} data={sensorData} />
           ))}
         </ol>
       ) : (
         <div className="info-message">
           <h2>No server connection</h2>
-          <p>Use power button to connect</p>
+          <p>Use power button to connect or try later</p>
         </div>
       )}
     </>
